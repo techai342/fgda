@@ -6,14 +6,15 @@ const images = [
   "https://ik.imagekit.io/shaban/SHABAN-1768573642529_UEEpMXFEkV.jpg",
   "https://ik.imagekit.io/shaban/SHABAN-1768573647809_L4RIsxMgI.jpg",
   "https://ik.imagekit.io/shaban/SHABAN-1768573652854__LqIeAU47.jpg",
-  "https://ik.imagekit.io/shaban/SHABAN-1768573659591_abaSpAF-y.jpg"
+  "https://ik.imagekit.io/shaban/SHABAN-1768573659591_abaSpAF-y.jpg",
   "https://ik.imagekit.io/shaban/SHABAN-1768573669146_5z2ap9EbK.jpg",
   "https://ik.imagekit.io/shaban/SHABAN-1768573674849_RvEzQQfNI.jpg",
-  "https://ik.imagekit.io/shaban/SHABAN-1768573679202_aZrkl8hRt.jpg"
-  "https://ik.imagekit.io/shaban/SHABAN-1768573689483_NnwuSUKqm.jpg"  
-  "https://ik.imagekit.io/shaban/SHABAN-1768573697274_CP3034fDP.jpg"
+  "https://ik.imagekit.io/shaban/SHABAN-1768573679202_aZrkl8hRt.jpg",
+  "https://ik.imagekit.io/shaban/SHABAN-1768573689483_NnwuSUKqm.jpg",
+  "https://ik.imagekit.io/shaban/SHABAN-1768573697274_CP3034fDP.jpg",
   "https://ik.imagekit.io/shaban/SHABAN-1768573705488_jYpVaM2u0.jpg"
 ];
+
 
 export default function Gallery() {
   const [i, setI] = useState(0);
