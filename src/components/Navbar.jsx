@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <nav className="flex flex-wrap gap-4 p-4 justify-center border-b border-cyan-400">
+    <nav className="flex flex-wrap gap-3 p-4 justify-center border-b border-cyan-400">
       <Link to="/" className="hover:text-cyan-400 transition px-3 py-1">Home</Link>
       <Link to="/about" className="hover:text-cyan-400 transition px-3 py-1">About</Link>
       <Link to="/gallery" className="hover:text-cyan-400 transition px-3 py-1">Gallery</Link>
@@ -20,6 +20,13 @@ export default function Navbar() {
       >
         <span>⚙️</span>
         Web Dashboard
+      </Link>
+      <Link 
+        to="/squad-manager" 
+        className="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg font-bold hover:shadow-[0_0_15px_green] transition flex items-center gap-2"
+      >
+        <span>👥</span>
+        Squad Manager
       </Link>
     </nav>
   );
