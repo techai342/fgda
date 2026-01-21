@@ -1,25 +1,45 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Login from "./pages/Login";
 import Home from "./pages/Home";
-import About from "./pages/About";
-import Gallery from "./pages/Gallery";
-import Social from "./pages/Social";
 import Admin from "./pages/Admin";
 import WebDashboard from "./pages/WebDashboard";
-import SquadManager from "./pages/SquadManager"; // نئی لائن
+import SquadManager from "./pages/SquadManager";
 
 export default function App() {
   return (
     <BrowserRouter>
-      <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/social" element={<Social />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/web-dashboard" element={<WebDashboard />} />
-        <Route path="/squad-manager" element={<SquadManager />} /> {/* نئی route */}
+        {/* Public Routes */}
+        <Route path="/login" element={<Login />} />
+        
+        {/* Protected Routes */}
+        <Route path="/" element={
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/admin" element={
+          <ProtectedRoute>
+            <Admin />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/web-dashboard" element={
+          <ProtectedRoute>
+            <WebDashboard />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/squad-manager" element={
+          <ProtectedRoute>
+            <SquadManager />
+          </ProtectedRoute>
+        } />
+        
+        {/* Redirect all unknown routes to login */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );
