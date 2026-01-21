@@ -5,7 +5,8 @@ import About from "./pages/About";
 import Gallery from "./pages/Gallery";
 import Social from "./pages/Social";
 import Admin from "./pages/Admin";
-import WebDashboard from "./pages/WebDashboard"; // نئی لائن
+import WebDashboard from "./pages/WebDashboard";
+import SquadManager from "./pages/SquadManager"; // نئی لائن
 
 export default function App() {
   return (
@@ -17,7 +18,8 @@ export default function App() {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/social" element={<Social />} />
         <Route path="/admin" element={<Admin />} />
-        <Route path="/web-dashboard" element={<WebDashboard />} /> {/* نئی route */}
+        <Route path="/web-dashboard" element={<WebDashboard />} />
+        <Route path="/squad-manager" element={<SquadManager />} /> {/* نئی route */}
       </Routes>
     </BrowserRouter>
   );
