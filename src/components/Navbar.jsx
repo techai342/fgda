@@ -2,31 +2,30 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <nav className="flex flex-wrap gap-3 p-4 justify-center border-b border-cyan-400">
-      <Link to="/" className="hover:text-cyan-400 transition px-3 py-1">Home</Link>
-      <Link to="/about" className="hover:text-cyan-400 transition px-3 py-1">About</Link>
-      <Link to="/gallery" className="hover:text-cyan-400 transition px-3 py-1">Gallery</Link>
-      <Link to="/social" className="hover:text-cyan-400 transition px-3 py-1">Social</Link>
+    <nav className="flex flex-wrap gap-3 p-4 justify-center border-b border-cyan-400 bg-black/80 backdrop-blur-md">
+      {/* Only Management System Buttons */}
       <Link 
         to="/admin" 
-        className="px-4 py-2 bg-gradient-to-r from-orange-500 to-red-600 rounded-lg font-bold hover:shadow-[0_0_15px_orange] transition flex items-center gap-2"
+        className="px-5 py-3 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl font-bold hover:shadow-[0_0_20px_orange] transition-all flex items-center gap-2 text-sm uppercase tracking-wider"
       >
-        <span>🔐</span>
-        Admin
+        <span className="text-lg">🔐</span>
+        <span>Admin Panel</span>
       </Link>
+      
       <Link 
         to="/web-dashboard" 
-        className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg font-bold hover:shadow-[0_0_15px_blue] transition flex items-center gap-2"
+        className="px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl font-bold hover:shadow-[0_0_20px_blue] transition-all flex items-center gap-2 text-sm uppercase tracking-wider"
       >
-        <span>⚙️</span>
-        Web Dashboard
+        <span className="text-lg">⚙️</span>
+        <span>Web Dashboard</span>
       </Link>
+      
       <Link 
         to="/squad-manager" 
-        className="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg font-bold hover:shadow-[0_0_15px_green] transition flex items-center gap-2"
+        className="px-5 py-3 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl font-bold hover:shadow-[0_0_20px_green] transition-all flex items-center gap-2 text-sm uppercase tracking-wider"
       >
-        <span>👥</span>
-        Squad Manager
+        <span className="text-lg">👥</span>
+        <span>Squad Manager</span>
       </Link>
     </nav>
   );
