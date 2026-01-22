@@ -1,3 +1,5 @@
+[file name]: Navbar.jsx
+[file content begin]
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -6,6 +8,8 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
+  const [showInstallButton, setShowInstallButton] = useState(false);
+  const [isAppInstalled, setIsAppInstalled] = useState(false);
   const navigate = useNavigate();
 
   // Check login status
@@ -19,11 +23,144 @@ export default function Navbar() {
     }
   }, []);
 
+  // PWA Install Logic
+  useEffect(() => {
+    // Check if app is already installed
+    const checkIfInstalled = () => {
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      
+      if (isStandalone) {
+        setIsAppInstalled(true);
+        setShowInstallButton(false);
+      }
+
+      // For iOS, we need to check differently
+      if (isIOS && window.navigator.standalone) {
+        setIsAppInstalled(true);
+        setShowInstallButton(false);
+      }
+    };
+
+    // Listen for beforeinstallprompt event
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      // Store the event for later use
+      window.deferredPrompt = e;
+      
+      // Show install button after 5 seconds if not installed
+      setTimeout(() => {
+        if (!isAppInstalled) {
+          setShowInstallButton(true);
+        }
+      }, 5000);
+    };
+
+    // Listen for app installed event
+    const handleAppInstalled = () => {
+      setIsAppInstalled(true);
+      setShowInstallButton(false);
+      console.log('🎉 PWA installed successfully!');
+    };
+
+    // Check initial install status
+    checkIfInstalled();
+
+    // Add event listeners
+    if ('BeforeInstallPromptEvent' in window) {
+      window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    }
+    
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+    };
+  }, [isAppInstalled]);
+
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("username");
     setIsLoggedIn(false);
     navigate("/login");
+  };
+
+  // PWA Install Function
+  const handleInstallPWA = () => {
+    if (window.deferredPrompt) {
+      window.deferredPrompt.prompt();
+      
+      window.deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('✅ User accepted PWA install');
+          setIsAppInstalled(true);
+          setShowInstallButton(false);
+          
+          // Show success message
+          showInstallSuccess();
+        } else {
+          console.log('❌ User dismissed PWA install');
+        }
+        window.deferredPrompt = null;
+      });
+    } else {
+      // For browsers that don't support beforeinstallprompt (iOS Safari)
+      showIOSInstructions();
+    }
+  };
+
+  const showInstallSuccess = () => {
+    const el = document.createElement('div');
+    el.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-3 rounded-xl shadow-lg z-[1000] flex items-center';
+    el.innerHTML = `
+      <span class="mr-2">✅</span>
+      <span>App installed successfully!</span>
+    `;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3000);
+  };
+
+  const showIOSInstructions = () => {
+    const el = document.createElement('div');
+    el.className = 'fixed inset-0 bg-black/80 z-[9999] flex items-center justify-center p-4';
+    el.innerHTML = `
+      <div class="bg-gray-900 rounded-2xl p-6 max-w-md w-full border border-cyan-500/30">
+        <h3 class="text-xl font-bold text-white mb-4">📱 Install on iOS</h3>
+        <ol class="text-gray-300 space-y-3 text-sm">
+          <li class="flex items-start">
+            <span class="bg-cyan-500 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 flex-shrink-0">1</span>
+            Tap the <strong>Share</strong> button (📤) in Safari
+          </li>
+          <li class="flex items-start">
+            <span class="bg-cyan-500 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 flex-shrink-0">2</span>
+            Scroll down and tap <strong>"Add to Home Screen"</strong>
+          </li>
+          <li class="flex items-start">
+            <span class="bg-cyan-500 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 flex-shrink-0">3</span>
+            Tap <strong>"Add"</strong> in top right corner
+          </li>
+        </ol>
+        <button class="mt-6 w-full bg-cyan-600 hover:bg-cyan-700 text-white py-3 rounded-xl font-bold transition">
+          Got it!
+        </button>
+      </div>
+    `;
+    
+    document.body.appendChild(el);
+    
+    // Close when clicking button
+    el.querySelector('button').addEventListener('click', () => {
+      el.remove();
+    });
+    
+    // Close when clicking outside
+    el.addEventListener('click', (e) => {
+      if (e.target === el) {
+        el.remove();
+      }
+    });
   };
 
   // If not logged in, don't show navbar
@@ -57,13 +194,25 @@ export default function Navbar() {
               <NavButton to="/squad-manager" icon="👥" label="Squad Manager" />
             </div>
 
-            {/* Right Side - User Info & Logout */}
+            {/* Right Side - User Info & Buttons */}
             <div className="flex items-center space-x-3">
+              {/* PWA Install Button (Desktop) */}
+              {showInstallButton && !isAppInstalled && (
+                <button
+                  onClick={handleInstallPWA}
+                  className="hidden md:flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:shadow-[0_0_15px_green] rounded-xl font-semibold transition-all animate-pulse"
+                >
+                  <span>⬇️</span>
+                  <span>Install App</span>
+                </button>
+              )}
+              
               {/* User Info */}
               <div className="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-white/5">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                 <span className="text-sm font-medium text-cyan-300">
                   {username}
+                  {isAppInstalled && <span className="ml-1 text-xs">📱</span>}
                 </span>
               </div>
 
@@ -105,6 +254,7 @@ export default function Navbar() {
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                   <span className="text-sm font-medium text-cyan-300">
                     {username}
+                    {isAppInstalled && <span className="ml-1 text-xs">📱</span>}
                   </span>
                 </div>
                 <button
@@ -114,6 +264,17 @@ export default function Navbar() {
                   Logout
                 </button>
               </div>
+
+              {/* PWA Install Button (Mobile) */}
+              {showInstallButton && !isAppInstalled && (
+                <button
+                  onClick={handleInstallPWA}
+                  className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl font-semibold mb-3"
+                >
+                  <span>⬇️</span>
+                  <span>Install App</span>
+                </button>
+              )}
 
               {/* Mobile Menu Links */}
               <MobileNavLink 
@@ -173,6 +334,22 @@ export default function Navbar() {
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
+
+      {/* Floating Install Button for Desktop (after 10 seconds) */}
+      {showInstallButton && !isAppInstalled && (
+        <div className="fixed bottom-6 right-6 z-40 animate-bounce">
+          <button
+            onClick={handleInstallPWA}
+            className="flex items-center space-x-2 px-5 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl font-bold shadow-lg shadow-green-500/30 hover:shadow-[0_0_20px_green] transition-all"
+          >
+            <span className="text-xl">⬇️</span>
+            <div className="text-left">
+              <div className="text-sm">Install App</div>
+              <div className="text-xs opacity-80">For quick access</div>
+            </div>
+          </button>
+        </div>
+      )}
     </>
   );
 }
@@ -214,3 +391,4 @@ const ExternalLink = ({ href, label }) => (
     {label}
   </a>
 );
+[file content end]
