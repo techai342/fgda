@@ -151,19 +151,12 @@ const Login = () => {
             </div>
           </form>
 
-          {/* Credentials Hint */}
-          <div className="mt-8 pt-6 border-t border-white/10">
-            <p className="text-center text-gray-500 text-sm">
-              <span className="font-bold text-cyan-400">Hint:</span> Username: <span className="font-mono">saqib</span> | Password: <span className="font-mono">saqibadmin</span>
+          {/* Footer */}
+          <div className="text-center mt-8">
+            <p className="text-gray-500 text-sm">
+              Tournament Management System • Secure Access Required
             </p>
           </div>
-        </div>
-
-        {/* Footer */}
-        <div className="text-center mt-6">
-          <p className="text-gray-500 text-sm">
-            Tournament Management System • Secure Access Required
-          </p>
         </div>
       </motion.div>
 
