@@ -567,27 +567,7 @@ const Admin = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <a 
-              href="https://admindta.vercel.app/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="btn-manager px-6 py-3 rounded-xl text-white font-black text-xs uppercase tracking-widest flex items-center gap-2"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-              Squad Manager
-            </a>
-            <button 
-              onClick={() => window.location.reload()}
-              className="bg-white/5 hover:bg-white/10 p-3 rounded-xl transition border border-white/10"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-            </button>
-          </div>
+          {/* Squad Manager اور Refresh کے بٹن ہٹا دیے گئے ہیں */}
         </motion.header>
 
         {/* Tabs */}
@@ -764,15 +744,6 @@ const Admin = () => {
         .status-filled {
           background: #ef4444;
           box-shadow: 0 0 10px #ef444466;
-        }
-        .btn-manager {
-          background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-          box-shadow: 0 4px 15px rgba(234, 88, 12, 0.3);
-          transition: all 0.3s ease;
-        }
-        .btn-manager:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(234, 88, 12, 0.5);
         }
         .notification-toast {
           position: fixed;
