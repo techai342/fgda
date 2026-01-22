@@ -1,8 +1,22 @@
+[file name]: index.html
+[file content begin]
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- PWA Meta Tags Start -->
+    <meta name="application-name" content="Management Portal">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Management">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="theme-color" content="#000000">
+    <!-- PWA Meta Tags End -->
     
     <!-- Title and Favicon -->
     <title>Management Portal</title>
@@ -13,16 +27,117 @@
     <link rel="apple-touch-icon" href="https://ik.imagekit.io/shaban/SHABAN-1769057701316_BszrYcha1.jpg">
     
     <!-- Additional Meta Tags for Better Display -->
-    <meta name="theme-color" content="#000000">
     <meta name="description" content="Tournament Management Portal - Complete Control Panel">
     <meta property="og:title" content="Management Portal">
     <meta property="og:description" content="Tournament Management Control Panel">
     <meta property="og:image" content="https://ik.imagekit.io/shaban/SHABAN-1769057701316_BszrYcha1.jpg">
     <meta property="og:url" content="https://fgda.vercel.app">
     <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
+    
+    <!-- Apple Touch Icons for PWA -->
+    <link rel="apple-touch-icon" sizes="192x192" href="https://ik.imagekit.io/shaban/SHABAN-1769057701316_BszrYcha1.jpg">
+    <link rel="apple-touch-icon" sizes="512x512" href="https://ik.imagekit.io/shaban/SHABAN-1769057701316_BszrYcha1.jpg">
   </head>
   <body class="bg-black text-white">
     <div id="root"></div>
+    
+    <!-- PWA Install Button Container -->
+    <div id="pwa-install-container"></div>
+    
     <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+      // Register service worker for PWA
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+              console.log('✅ PWA Service Worker registered:', registration.scope);
+              
+              // Check for updates
+              registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                console.log('🔄 New Service Worker installing...');
+                
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    console.log('🔄 New content available, please refresh.');
+                  }
+                });
+              });
+            })
+            .catch(error => {
+              console.log('❌ Service Worker registration failed:', error);
+            });
+        });
+      }
+      
+      // PWA Install Prompt
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        console.log('📱 PWA Install prompt available');
+        
+        // Show install button after 5 seconds
+        setTimeout(() => {
+          if (deferredPrompt && !window.matchMedia('(display-mode: standalone)').matches) {
+            const installBtn = document.createElement('button');
+            installBtn.id = 'pwa-install-btn';
+            installBtn.className = 'fixed bottom-6 right-6 z-50 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-cyan-500/30 hover:shadow-[0_0_20px_cyan] transition-all animate-bounce';
+            installBtn.innerHTML = '⬇️ Install App';
+            installBtn.onclick = installPWA;
+            document.body.appendChild(installBtn);
+            
+            // Auto-hide after 15 seconds
+            setTimeout(() => {
+              if (installBtn.parentNode) {
+                installBtn.remove();
+              }
+            }, 15000);
+          }
+        }, 5000);
+      });
+      
+      function installPWA() {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('✅ User accepted PWA install');
+              // Remove button after installation
+              const installBtn = document.getElementById('pwa-install-btn');
+              if (installBtn) installBtn.remove();
+            } else {
+              console.log('❌ User dismissed PWA install');
+            }
+            deferredPrompt = null;
+          });
+        }
+      }
+      
+      // Detect if app is running in standalone mode
+      window.addEventListener('DOMContentLoaded', () => {
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+          console.log('📱 Running in standalone PWA mode');
+          document.documentElement.classList.add('pwa-standalone');
+        }
+      });
+    </script>
+    
+    <!-- No JavaScript Warning -->
+    <noscript>
+      <div class="fixed inset-0 bg-black z-50 flex items-center justify-center p-4">
+        <div class="text-center max-w-md">
+          <h1 class="text-2xl font-bold text-white mb-4">JavaScript Required</h1>
+          <p class="text-gray-400 mb-4">This portal requires JavaScript to function properly.</p>
+        </div>
+      </div>
+    </noscript>
   </body>
 </html>
+[file content end]
