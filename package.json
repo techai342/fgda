@@ -10,6 +10,9 @@
     "preview": "vite preview",
     "deploy": "npm run build && vercel --prod"
   },
+  "engines": {
+    "node": "18.x"
+  },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -23,7 +26,6 @@
     "tailwindcss": "^3.4.0",
     "postcss": "^8.4.0",
     "autoprefixer": "^10.4.0",
-    "vite-plugin-pwa": "^0.17.4"  
+    "vite-plugin-pwa": "^0.17.4"
   }
 }
-[file content end]
