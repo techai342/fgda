@@ -4,15 +4,12 @@ import { createClient } from '@supabase/supabase-js';
 
 const SquadManager = () => {
   const [activeTab, setActiveTab] = useState('reg');
-  const [showLogin, setShowLogin] = useState(true);
   const [squadData, setSquadData] = useState([]);
   const [passwordsData, setPasswordsData] = useState([]);
   const [selectedSquad, setSelectedSquad] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
-  const [showWebManagerMenu, setShowWebManagerMenu] = useState(false);
   const [statusMessage, setStatusMessage] = useState({ text: '', isError: false, show: false });
-  const [loginForm, setLoginForm] = useState({ username: '', password: '' });
   const [filledSlots, setFilledSlots] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -22,38 +19,15 @@ const SquadManager = () => {
     "sb_publishable_PsL-7tSFu4EQU5ZHQgO6UA_Segl7g_e"
   );
 
-  // Check if already logged in
+  // Fetch initial data on component mount
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem('squadAdminLoggedIn');
-    if (isLoggedIn === 'true') {
-      setShowLogin(false);
-      fetchInitialData();
-    }
+    fetchInitialData();
   }, []);
 
   // Show status message
   const showStatus = (text, isError = false) => {
     setStatusMessage({ text, isError, show: true });
     setTimeout(() => setStatusMessage({ text: '', isError: false, show: false }), 3000);
-  };
-
-  // Login handler
-  const handleLogin = () => {
-    if (loginForm.username === "admin" && loginForm.password === "squad-admin") {
-      localStorage.setItem('squadAdminLoggedIn', 'true');
-      setShowLogin(false);
-      fetchInitialData();
-    } else {
-      showStatus("Ghalat Username ya Password!", true);
-    }
-  };
-
-  // Logout handler
-  const handleLogout = () => {
-    localStorage.removeItem('squadAdminLoggedIn');
-    setShowLogin(true);
-    setSquadData([]);
-    setPasswordsData([]);
   };
 
   // Fetch initial data
@@ -199,55 +173,6 @@ const SquadManager = () => {
     </div>
   );
 
-  // Login Screen
-  if (showLogin) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="bg-slate-900/95 p-8 md:p-12 rounded-[2.5rem] shadow-2xl w-full max-w-md border border-white/10"
-        >
-          <h2 className="text-xs font-black text-orange-500 tracking-[0.5em] text-center mb-2 uppercase">
-            System Access
-          </h2>
-          <h2 className="text-3xl font-black text-white mb-8 text-center italic uppercase">
-            Admin Login
-          </h2>
-          <div className="space-y-4">
-            <input
-              type="text"
-              placeholder="Username"
-              value={loginForm.username}
-              onChange={(e) => setLoginForm({...loginForm, username: e.target.value})}
-              className="w-full p-5 bg-white/5 border border-white/10 focus:border-orange-500 rounded-2xl outline-none transition-all text-white font-bold"
-              onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={loginForm.password}
-              onChange={(e) => setLoginForm({...loginForm, password: e.target.value})}
-              className="w-full p-5 bg-white/5 border border-white/10 focus:border-orange-500 rounded-2xl outline-none transition-all text-white font-bold"
-              onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
-            />
-            <button
-              onClick={handleLogin}
-              className="w-full bg-orange-600 text-white font-black py-5 rounded-2xl shadow-xl hover:bg-orange-500 active:scale-[0.98] transition-all uppercase tracking-widest mt-4"
-            >
-              Sign In
-            </button>
-            {statusMessage.show && statusMessage.isError && (
-              <p className="text-red-500 text-center font-bold text-sm">
-                {statusMessage.text}
-              </p>
-            )}
-          </div>
-        </motion.div>
-      </div>
-    );
-  }
-
   return (
     <>
       {/* Background */}
@@ -284,59 +209,6 @@ const SquadManager = () => {
             <h1 className="text-lg md:text-xl font-black tracking-[0.2em] uppercase italic">
               Squad Admin
             </h1>
-          </div>
-          
-          <div className="flex items-center gap-2">
-            {/* Web Manager Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setShowWebManagerMenu(!showWebManagerMenu)}
-                className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg flex items-center gap-2"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                </svg>
-                Web Manager
-              </button>
-              
-              {showWebManagerMenu && (
-                <div className="absolute right-0 mt-2 w-48 glass-panel rounded-2xl overflow-hidden shadow-2xl border border-white/20 z-50">
-                  <a
-                    href="https://webmanger.vercel.app/"
-                    target="_self"
-                    className="block px-5 py-4 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:bg-orange-600 hover:text-white transition-all border-b border-white/5"
-                  >
-                    Web Manager 1
-                  </a>
-                  <a
-                    href="https://webmanger2-v1ed.vercel.app/"
-                    target="_self"
-                    className="block px-5 py-4 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:bg-orange-600 hover:text-white transition-all"
-                  >
-                    Web Manager 2
-                  </a>
-                </div>
-              )}
-            </div>
-
-            <a
-              href="https://adminpaymentdasboard.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg flex items-center gap-2"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-              </svg>
-              <span className="hidden md:inline">Payment Manager</span>
-            </a>
-            
-            <button
-              onClick={handleLogout}
-              className="bg-red-500/10 hover:bg-red-600 text-red-500 hover:text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all border border-red-500/20"
-            >
-              Logout
-            </button>
           </div>
         </div>
       </header>
