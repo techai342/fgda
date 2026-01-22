@@ -1,5 +1,4 @@
-[file name]: Navbar.jsx
-[file content begin]
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -391,4 +390,3 @@ const ExternalLink = ({ href, label }) => (
     {label}
   </a>
 );
-[file content end]
