@@ -154,19 +154,19 @@ export default function Home() {
           <p className="text-gray-300 mb-4 text-base font-bold">External Links</p>
           <div className="flex flex-wrap justify-center gap-3">
             <ExternalQuickLink 
-              href="https://admindta.vercel.app/" 
-              icon="📊"
-              label="Squad V2" 
+              href="https://tech-ai1.vercel.app/" 
+              icon="🤖"
+              label="Tech AI" 
             />
             <ExternalQuickLink 
-              href="https://adminpaymentdasboard.vercel.app/" 
-              icon="💳"
-              label="Payment" 
-            />
-            <ExternalQuickLink 
-              href="https://webmanger.vercel.app/" 
+              href="https://saqib.zone.id/" 
               icon="🌐"
-              label="Web Mgr" 
+              label="Saqib Zone" 
+            />
+            <ExternalQuickLink 
+              href="https://eman.zone.id/" 
+              icon="⚡"
+              label="Eman Zone" 
             />
           </div>
         </motion.div>
