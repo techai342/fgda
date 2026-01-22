@@ -1,5 +1,4 @@
-[file name]: manifest.json
-[file content begin]
+
 {
   "name": "Management Portal",
   "short_name": "Management",
@@ -21,6 +20,3 @@
       "type": "image/jpg"
     }
   ],
-  "categories": ["business", "productivity", "utilities"]
-}
-[file content end]
