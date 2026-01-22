@@ -158,24 +158,24 @@ export default function Home() {
         >
           <p className="text-gray-300 mb-4 text-base font-bold">External Links</p>
           <div className="flex flex-wrap justify-center gap-3">
-          <ExternalQuickLink 
-              href="https://tech-ai1.vercel.app/" 
-              icon="🤖"
-              label="Tech AI" 
-            />
             <ExternalQuickLink 
               href="https://saqib.zone.id/" 
-              icon="🌐"
-              label="Saqib Zone" 
+              icon="📊"
+              label="admin" 
             />
             <ExternalQuickLink 
               href="https://eman.zone.id/" 
-              icon="⚡"
-              label="Eman Zone" 
+               icon="🌐"
+              label="freefire" 
+            />
+            <ExternalQuickLink 
+              href="https://techai.zone.id/" 
+              icon="🌐"
+              label="Web Mgr" 
             />
           </div>
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* Footer */}
       <footer className="relative z-10 text-center py-6 border-t border-white/10 mt-6">
