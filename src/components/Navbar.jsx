@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -147,20 +148,16 @@ export default function Navbar() {
                 </p>
                 <div className="grid grid-cols-2 gap-2">
                   <ExternalLink 
-                    href="https://admindta.vercel.app/" 
-                    label="Squad V2" 
+                    href="https://tech-ai1.vercel.app/" 
+                    label="Tech AI" 
                   />
                   <ExternalLink 
-                    href="https://adminpaymentdasboard.vercel.app/" 
-                    label="Payment" 
+                    href="https://saqib.zone.id/" 
+                    label="Saqib Zone" 
                   />
                   <ExternalLink 
-                    href="https://webmanger.vercel.app/" 
-                    label="Web Mgr" 
-                  />
-                  <ExternalLink 
-                    href="https://webmanger2-v1ed.vercel.app/" 
-                    label="Web Mgr 2" 
+                    href="https://eman.zone.id/" 
+                    label="Eman Zone" 
                   />
                 </div>
               </div>
@@ -217,6 +214,3 @@ const ExternalLink = ({ href, label }) => (
     {label}
   </a>
 );
-
-// Framer Motion import
-import { motion } from "framer-motion";
